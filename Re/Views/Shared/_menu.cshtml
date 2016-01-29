@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+}
+@using Models;
+@using Common;
+@using DAL;
+<div id="showMenu">
+    @{
+        LoginUser user = (LoginUser)Session["data"];
+        List<SysTemplateViewModel> list = user.ActionList;
+    }
+    <ul class="bigMenu">
+        @{if (list != null && list.Count > 0)
+        {
+            foreach (var item in list)
+            {
+                if (item.ParentId == 0)
+                {
+                    <li>
+                        <a href="@item.TemplateUrl">@item.Template</a>
+                        @{List<SysTemplateViewModel> listSecod = new Sys_TemplateDAL().GetViewlListByType(0, item.Id);}
+                        @if (listSecod != null && listSecod.Count > 0)
+                        {
+                            <ul class="smallMenu">
+                                @foreach (var itemSecond in listSecod)
+                                {
+                                    <li>
+                                        <a href="@itemSecond.TemplateUrl">@itemSecond.Template</a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </li>
+                }
+            }
+        }
+        }
+    </ul>
+</div>
+

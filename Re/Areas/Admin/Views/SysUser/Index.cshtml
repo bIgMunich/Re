@@ -1,0 +1,310 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title> ZTREE DEMO - Simple Data</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link href="~/Content/zTree-zTree_v3-master/zTree_v3/css/demo.css" rel="stylesheet" />
+    <link href="~/Content/zTree-zTree_v3-master/zTree_v3/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+    <script src="~/Content/zTree-zTree_v3-master/zTree_v3/js/jquery-1.4.4.min.js"></script>
+    <script src="~/Content/zTree-zTree_v3-master/zTree_v3/js/jquery.ztree.core-3.5.js"></script>
+    <script type="text/javascript">
+		<!--
+        var setting = {
+            view: {
+                selectedMulti: true
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                beforeClick: beforeClick,
+                onClick: onClick
+            }
+        };
+        function getData() {
+            var zNodes = "";
+            $.ajax({
+                url: "/SysDept/GetTreeTest",
+                async: false,
+                type: "post",
+                success: function (json) {
+                    zNodes = json;
+                }
+            });
+            return zNodes;
+        }
+
+        var log, className = "dark";
+        function beforeClick(treeId, treeNode, clickFlag) {
+            className = (className === "dark" ? "" : "dark");
+            return (treeNode.click != false);
+        }
+        function onClick(event, treeId, treeNode, clickFlag) {
+            $("#DeptId").val(treeNode.id);
+            getDataByDeptId(treeNode.id);
+        }
+
+        function getDataByDeptId(deptId) {
+            var htmls = "";
+            $.ajax({
+                url: "/SysUser/GetList",
+                async: false,
+                type: "post",
+                data: { "DeptId": deptId },
+                success: function (json) {
+                    if (json != null && json != undefined) {
+                        for (var i = 0; i < json.length; i++) {
+                            htmls += "<tr>";
+                            htmls += "<td>" + json[i].Id + "</td>";
+                            htmls += "<td>" + json[i].Account + "</td>";
+                            htmls += "<td>" + json[i].RealName + "</td>";
+                            htmls += "<td>" + json[i].DeptId + "</td>";
+                            htmls += "<td>" + json[i].Type + "</td>";
+                            htmls += "<td><a href='javascript:' onclick='permiss("+json[i].Id+")'>分配权限</a></td>";
+                            htmls += "</tr>";
+                        }
+                    }
+                }
+            });
+            $("#showUser").html(htmls);
+        }
+
+        function getTime() {
+            var now = new Date(),
+			h = now.getHours(),
+			m = now.getMinutes(),
+			s = now.getSeconds(),
+			ms = now.getMilliseconds();
+            return (h + ":" + m + ":" + s + " " + ms);
+        }
+
+        $(document).ready(function () {
+            $.fn.zTree.init($("#treeDemo"), setting, getData());
+            getRoleData();
+        });
+
+        function create() {
+            if ($("#DeptId").val() == "") {
+                alert("请选择部门");
+                return;
+            }
+            $("#windowMask").show();
+            $("#windowDiv").css("top", offsetH).css("left", offsetw).show();
+        }
+
+        function calse() {
+            $("#windowMask").hide();
+            $("#windowDiv").hide();
+        }
+
+            var windowH = $(window).height();
+            var windowW = $(window).width();
+            var offsetH = (windowH - 400) / 2;
+            var offsetw = (windowW - 300) / 2;
+
+        function permiss(id) {
+            $("#UserId").val(id);
+            openWindow();
+            $("#windowMask").show();
+            $("#roleList").css("top", offsetH).css("left", offsetw).show();
+        }
+
+        function getRoleData() {
+            var htmls = "";
+            $.ajax({
+                url: "/SysRole/GetList",
+                async: false,
+                type: "post",
+                success: function (json) {
+                    if (json != null && json != undefined) {
+                        for (var i = 0; i < json.length; i++) {
+                            htmls += "<tr>";
+                            htmls += "<td><input id=" + json[i].Id + " type='checkbox' onclick='saveRole(this)'  data-id=" + json[i].Id + " /></td>";
+                            htmls += "<td>" + json[i].RoleName + "</td>";
+                            htmls += "</tr>";
+                        }
+                    }
+                }
+            });
+            $("#showRole").html(htmls);
+        }
+
+        function save() {
+            $.ajax({
+                url: '/SysUser/Add',
+                async: false,
+                type: "post",
+                data: { "DeptId": $("#DeptId").val(), "RealName": $("#RealName").val(),"Account":$("#Account").val(),"Type":$("Type").val()},
+                success: function (json) {
+                    if (json != null && json != undefined) {
+                        if (json.Flag == true) {
+                            alert("保存成功");
+                            getDataByDeptId($("#DeptId").val());
+                            $("#windowMask").hide();
+                            $("#windowDiv").hide();
+                        } else {
+                            alert(json.Message);
+                            }
+                        }
+                }
+            });
+        }
+
+        function saveRole(obj) {
+            var self = $(obj);
+            if (self.attr("checked")) {
+                $.ajax({
+                    url: "/SysUserRole/Add",
+                    async: false,
+                    type: "post",
+                    data:{"UserId":$("#UserId").val(),"RoleId":self.attr("id")},
+                    success: function (json) {
+                        if (json != null && json != undefined) {
+                            if (json.Flag) {
+
+                            } else {
+                                alert(json.Message);
+                                self.attr("checked", false);
+                            }
+                        }
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: "/SysUserRole/Delete",
+                    async: false,
+                    type: "post",
+                    data: { "UserId": $("#UserId").val(), "RoleId": self.attr("id") },
+                    success: function (json) {
+                        if (json != null && json != undefined) {
+                            if (json.Flag) {
+                            } else {
+                                alert(json.Message);
+                                self.attr("checked", true);
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div style="width: 100%;">
+        <div style="width: 20%; float:left">
+            <ul id="treeDemo" class="ztree"></ul>
+        </div>
+        <div style="width: 80%;float: left">
+            <input id="btnCreate" name="btnCreate" type="button" class="btn-success" value="添加" onclick="create()" />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>账号</th>
+                        <th>姓名</th>
+                        <th>部门</th>
+                        <th>类型</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="showUser"></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+
+<div id="windowMask"></div>
+<div id="windowDiv">
+    <ul style="top: 30px; position: relative;">
+        <li>
+            真实姓名:<input id="RealName" type="text" />
+        </li>
+        <li class="divSpace"></li>
+        <li>
+            登录账号:<input id="Account" type="text" />
+        </li>
+        <li class="divSpace"></li>
+        <li> 用户类型:<input id="Type" name="Type" type="text"></li>
+        <li class="divSpace"></li>
+        <li>
+            <input id="btnAdd" type="button" value="保存" onclick="save()" />
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <input id="btnCalse" type="button" value="取消" onclick="calse()" />
+        </li>
+    </ul>
+</div>
+
+<div id="roleList">
+    <table class="table">
+        <thead>
+            <tr>
+                <td>选择</td>
+                <td>角色名称</td>
+            </tr>
+        </thead>
+        <tbody id="showRole"></tbody>
+    </table>
+</div>
+<input id="UserId" type="hidden" />
+<input id="DeptId" type="hidden" />
+
+<style type="text/css">
+    .divSpace {
+        height: 5px;
+    }
+
+    .ztree li span.button.add {
+        margin-left: 2px;
+        margin-right: -1px;
+        background-position: -144px 0;
+        vertical-align: top;
+        *vertical-align: middle;
+    }
+
+    #windowDiv {
+        display: none;
+        position: absolute;
+        width: 400px;
+        height: 200px;
+        z-index: 3;
+        background-color: #1E1E1E;
+        border: 1px solid #9CDFCE;
+        list-style: none;
+        color: white;
+    }
+
+        #windowDiv li {
+            list-style: none;
+            text-align: center;
+        }
+
+    #windowMask {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        opacity: 0.5;
+        background-color: black;
+        display: none;
+        z-index: 2;
+    }
+
+    #roleList {
+        display: none;
+        position: absolute;
+        width: 300px;
+        height: 250px;
+        z-index: 3;
+        background-color: #1E1E1E;
+        border: 1px solid #9CDFCE;
+        list-style: none;
+        color: white;
+    }
+</style>

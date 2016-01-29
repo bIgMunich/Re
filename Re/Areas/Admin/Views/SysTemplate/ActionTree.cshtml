@@ -1,0 +1,165 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<script src="~/Content/zTree-zTree_v3-master/zTree_v3/js/jquery-1.4.4.min.js"></script>
+<div id="tree">
+
+</div>
+<input id="RoleId" type="hidden" value="@ViewBag.RoleId" />
+<script type="text/javascript">
+    init();
+    initSelect();
+    function init() {
+        var strTree = "<ul>";
+        $.ajax({
+            url: "/Admin/SysTemplate/GetRoot",
+            async: false,
+            type: "post",
+            success: function (json) {
+                if (json != null) {
+                    for (var i = 0; i < json.length; i++) {
+                        strTree += setValue(json[i].Id, json[i].Type, json[i].Template, json[i].TypeName, json[i].ParentId);
+                        strTree += getSecondData(json[i].Id);
+                    }
+                }
+            }
+        });
+        strTree += "<ul>";
+        $("#tree").html(strTree);
+    }
+
+    function getSecondData(parentId) {
+        var strHtml = "";
+        $.ajax({
+            url: "/Admin/SysTemplate/GetViewListByTypeAndParentId",
+            async: false,
+            type: "post",
+            data: { type: 0, parentId: parentId },
+            success: function (json) {
+                if (json != null) {
+                    strHtml += "<ul>";
+                    for (var i = 0; i < json.length; i++) {
+                        strHtml += setValue(json[i].Id, json[i].Type, json[i].Template, json[i].TypeName, json[i].ParentId);
+                        strHtml += getActionData(json[i].Id);
+                    }
+                    strHtml += "</ul>";
+                }
+            }
+        });
+        return strHtml;
+    }
+
+    function getActionData(parentId) {
+        var strHtml = "";
+        $.ajax({
+            url: "/Admin/SysTemplate/GetViewListByTypeAndParentId",
+            async: false,
+            type: "post",
+            data: { type: 1, parentId: parentId },
+            success: function (json) {
+                if (json != null) {
+                    strHtml += "<ul>";
+                    for (var i = 0; i < json.length; i++) {
+                        strHtml += setValue(json[i].Id, json[i].Type, json[i].Template, json[i].TypeName, json[i].ParentId);
+                    }
+                    strHtml += "</ul>";
+                }
+            }
+        });
+        return strHtml;
+    }
+
+    function setValue(id, type, template, typeName, parentId) {
+        var strTree = "";
+        strTree += "<li><input id=" + id + " type='checkbox' onclick='save(this)'  data-id=" + id + " data-parentId=" + parentId + " data-type=" + type + " />";
+        strTree += "-" + template;
+        strTree += "-" + typeName;
+        strTree += "</li>";
+        return strTree;
+    }
+
+    function save(obj) {
+        var self = $(obj);
+        if (self.attr("checked")) {
+            var parentId = self.attr("data-parentId");
+            if (parentId != "0" && !$("#" + parentId).attr("checked")) {
+                alert("上级栏目未选中，请选择");
+                self.attr("checked", false);
+                return;
+            }
+            $.ajax({
+                url: "/Admin/SysRoleTemplate/Add",
+                async: false,
+                type: "post",
+                data: { RoleId: $("#RoleId").val(), ActionId: self.attr("data-id") },
+                success: function (json) {
+                    if (json != null) {
+                        if (!json.Flag) {
+                            alert(json.Message);
+                            self.attr("checked", false);
+                        }
+                    }
+                }
+            });
+        } else {
+            var parentId = self.attr("data-id");
+            if (!getCheckFlag(parentId)) {
+                self.attr("checked", true);
+                return;
+            }
+            $.ajax({
+                url: "/Admin/SysRoleTemplate/Delete",
+                async: false,
+                type: "post",
+                data: { RoleId: $("#RoleId").val(), ActionId: self.attr("data-id") },
+                success: function (json) {
+                    if (json != null) {
+                        if (!json.Flag) {
+                            alert(json.Message);
+                            self.attr("checked", true);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    function getCheckFlag(parentId) {
+        alert($(this).next().find('li').length);
+        var flag = true;
+        var objList = $("input");
+        for (var i = 0; i < objList.length; i++) {
+            var self = $(objList[i]);
+            if (self.attr("data-parentId") == parentId) {
+                if (self.attr("checked")) {
+                    alert("下级栏目已经被选中，请选择");
+                    flag = false;
+                    return flag;
+                }
+            }
+        }
+        return flag;
+    }
+
+    function initSelect() {
+        $.ajax({
+            url: "/Admin/SysRoleTemplate/GetListByRoleId",
+            async: false,
+            type: "post",
+            data: { RoleId: $("#RoleId").val() },
+            success: function (json) {
+                if (json != null) {
+                    for (var i = 0; i < json.length; i++) {
+                        $("#" + json[i].ActionId).attr("checked", true);
+                    }
+                }
+            }
+        });
+    }
+</script>
+<style>
+    ul {
+        list-style: none;
+    }
+</style>

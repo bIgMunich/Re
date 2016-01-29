@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Edit";
+}
+@model Models.munich_re
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+@using (Ajax.BeginForm("Edit", "Home", null, new AjaxOptions()
+{
+    HttpMethod = "Post",
+    OnSuccess = "AddTip"
+}, new { id = "ff" }))
+{
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td>@Html.TextBoxFor(model => model.Name)</td>
+        </tr>
+        <tr>
+            <td>Introduce:</td>
+            <td>@Html.TextBoxFor(model => model.Introduce)</td>
+        </tr>
+        <tr>
+            <td>IsTrue</td>
+            <td>
+                <select name="IsTrue" id="IsTrue">
+                    <option value="1">true</option>
+                    <option value="0">false</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="submit" /></td>
+        </tr>
+    </table>
+    @Html.HiddenFor(model => model.Id);
+    <div id="tt" style=" background-color:#00ffff"></div>
+}
+<script type="text/javascript">
+    function AddTip(ajaxContext) {
+        if (ajaxContext.Success) {
+            alert(ajaxContext);
+        }
+        else {
+            alert(ajaxContext);
+        }
+    }
+</script>

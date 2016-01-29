@@ -1,0 +1,202 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title> ZTREE DEMO - Simple Data</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Content/zTree-zTree_v3-master/zTree_v3/js/jquery-1.4.4.min.js"></script>
+    <div style="width: 100%">
+        <input id="btnAdd" name="btnAdd" type="button" value="添加" class="btn-success" onclick="openWindow()" />
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>选择</td>
+                    <td>编号</td>
+                    <td>栏目名称</td>
+                    <td>栏目编码</td>
+                    <td>所属栏目</td>
+                    <td>类型</td>
+                    <td>有效性</td>
+                </tr>
+            </thead>
+            <tbody id="showTemplate"></tbody>
+        </table>
+    </div>
+</head>
+
+<body>
+    <div class="content_wrap">
+        <div class="zTreeDemoBackground left">
+            <ul id="treeDemo" class="ztree"></ul>
+        </div>
+    </div>
+</body>
+</html>
+
+<div id="windowMask"></div>
+<div id="windowDiv">
+    <ul style="top: 30px; position: relative; text-align: center; list-style: none">
+        <li>
+            模块名称:<input id="Template" type="text" />
+        </li>
+        <li class="liSpace"></li>
+        <li>
+            模块地址:<input id="TemplateUrl" type="text" />
+        </li>
+        <li class="liSpace"></li>
+        <li>模块编码:<input id="TemplateCode" type="text" /></li>
+        <li class="liSpace"></li>
+        <li>
+            <input id="btnAdd" type="button" value="保存" onclick="
+                save()" />
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <input id="btnCalse" type="button" value="取消" onclick="
+                closeWindow()" />
+        </li>
+    </ul>
+</div>
+<input id="ParentId" type="hidden" value="@ViewBag.ParentId" />
+<input id="Lever" type="hidden" value="2" />
+<input id="Type" type="hidden" value="1" />
+<script type="text/javascript">
+    init();
+    function init() {
+        var strHtml = "";
+        $.ajax({
+            url: "/SysTemplate/GetViewListByTypeAndParentId",
+            async: false,
+            type: "post",
+            data: { type: $("#Type").val(), parentId: $("#ParentId").val() },
+            success: function (json) {
+                if (json != null && json != undefined) {
+                    for (var i = 0; i < json.length; i++) {
+                        strHtml += "<tr>";
+                        strHtml += "<td><input type='checkbox' data-id=" + json[i].Id + " data-lever=" + json[i].Lever + " data-type=" + json[i].Type + " /></td>";
+                        strHtml += "<td>" + json[i].Id + "</td>";
+                        strHtml += "<td>" + json[i].Template + "</td>";
+                        strHtml += "<td>" + json[i].TemplateCode + "</td>";
+                        strHtml += "<td>" + json[i].ParentName + "</td>";
+                        strHtml += "<td>" + json[i].TypeName + "</td>";
+                        strHtml += "<td>" + json[i].VaildName + "</td>";
+                        strHtml += "</tr>";
+                    }
+                }
+            }
+        });
+        $("#showTemplate").html(strHtml);
+    }
+
+    function getSigleCheck() {
+        var objcheckList = $("input[type='checkbox']");
+        if (objcheckList != null && objcheckList.length > 0) {
+            if (getCheckedCount(objcheckList) == 1) {
+                for (var i = 0; i < objcheckList.length; i++) {
+                    if (objcheckList[i].checked) {
+                        var id = $(objcheckList[i]).attr("data-id");
+                        var lever = parseInt($(objcheckList[i]).attr("data-lever")) + 1;
+                        $("#ParentId").val(id);
+                        $("#Lever").val(lever);
+                        return true;
+                    }
+                }
+            }
+            if (getCheckedCount(objcheckList) == 0) {
+                return true;
+            }
+            if (getCheckedCount(objcheckList) > 1) {
+                alert("只能选择一个");
+                return false;
+            }
+        }
+    }
+
+    function getCheckedCount(obj) {
+        var count = 0;
+        if (obj != null && obj.length > 0) {
+            for (var i = 0; i < obj.length; i++) {
+                if (obj[i].checked) {
+                    count++;
+                }
+            }
+            return count;
+        }
+    }
+
+    function openWindow() {
+        var windowH = $(window).height();
+        var windowW = $(window).width();
+        var offsetH = (windowH - 150) / 2;
+        var offsetw = (windowW - 300) / 2;
+        $("#windowMask").show();
+        $("#windowDiv").css("top", offsetH).css("left", offsetw).show();
+    }
+
+    function save() {
+        $.ajax({
+            url: "/SysTemplate/Add",
+            async: false,
+            data: { "ParentId": $("#ParentId").val(), "Type": $("#Type").val(), "Template": $("#Template").val(), "TemplateCode": $("#TemplateCode").val(), "TemplateUrl": $("#TemplateUrl").val(), "Lever": $("#Lever").val() },
+            type: "post",
+            success: function (json) {
+                if (json != null && json != undefined) {
+                    if (json.Flag) {
+                        alert("保存成功");
+                        closeWindow();
+                    } else {
+                        alert(json.Message);
+                    }
+                }
+            }
+        });
+    }
+
+    function closeWindow() {
+        $("#windowDiv").hide();
+        $("#windowMask").hide();
+        $("#Template").val("");
+        $("#TemplateUrl").val("");
+        $("#TemplateCode").val("");
+    }
+
+</script>
+
+<style type="text/css">
+    .ztree li span.button.add {
+        margin-left: 2px;
+        margin-right: -1px;
+        background-position: -144px 0;
+        vertical-align: top;
+        *vertical-align: middle;
+    }
+
+    .liSpace {
+        height: 5px;
+    }
+
+    #windowDiv {
+        display: none;
+        position: absolute;
+        width: 300px;
+        height: 150px;
+        z-index: 3;
+        background-color: #1E1E1E;
+        border: 1px solid #9CDFCE;
+        list-style: none;
+        color: white;
+    }
+
+    #windowMask {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        opacity: 0.5;
+        background-color: black;
+        display: none;
+        z-index: 2;
+    }
+</style>

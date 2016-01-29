@@ -1,0 +1,23 @@
+{
+    "status": 1,
+    "msg": "ok",
+    "data": [
+        {
+            "name": "销售部",
+            "nums": 36,
+            "id": 1,
+            "item": [
+                {
+                    "id": "1001",
+                    "name": "Sky",
+                    "face": "/Images/a5.jpg"
+                },
+                {
+                    "id": "1002",
+                    "name": "Tony",
+                    "face": "/Images/a8.jpg"
+                }
+            ]
+        }
+    ]
+}
