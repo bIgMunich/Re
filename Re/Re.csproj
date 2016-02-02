@@ -144,6 +144,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CompetenceMethod.cs" />
     <Compile Include="Models\RoleAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -154,6 +155,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\common\font-awesome.min.css" />
+    <Content Include="Content\common\windowDiv.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\login.min.css" />
     <Content Include="Content\common\style.min.css" />
@@ -737,7 +739,6 @@
     <Content Include="Areas\Admin\Views\SysUser\Index.cshtml" />
     <Content Include="Areas\Admin\Views\SysTemplate\Index.cshtml" />
     <Content Include="Areas\Admin\Views\SysRole\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\SysRole\Test.cshtml" />
     <Content Include="Areas\Admin\Views\SysTemplate\Test.cshtml" />
     <Content Include="Areas\Admin\Views\SysTemplate\ActionTree.cshtml" />
     <None Include="Scripts\jquery-1.9.0.intellisense.js" />
@@ -748,6 +749,10 @@
     <Content Include="Scripts\App\Pager.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Common\sysdept.js" />
+    <Content Include="Scripts\Common\sysrole.js" />
+    <Content Include="Scripts\Common\sysTemplate.js" />
+    <Content Include="Scripts\Common\sysuser.js" />
     <Content Include="Scripts\contabs.min.js" />
     <Content Include="Scripts\content.min.js" />
     <Content Include="Scripts\hplus.js" />
@@ -807,7 +812,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\Common\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

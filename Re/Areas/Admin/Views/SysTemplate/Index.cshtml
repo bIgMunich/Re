@@ -1,14 +1,24 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using Re.Models;
+@using Models;
 <!DOCTYPE html>
 <html>
 <head>
-    <title> ZTREE DEMO - Simple Data</title>
+    <title></title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/common/windowDiv.css" rel="stylesheet" />
+    
+</head>
+
+<body>
     <div style="width: 100%">
-        <input id="btnAdd" name="btnAdd" type="button" value="添加" class="btn-success" onclick="openWindow()" />
+        @if (CompetenceMethod.ActionFlag(CompetenceModel.TemplateActionAdd))
+        {
+            <input id="btnAdd" name="btnAdd" type="button" value="添加" class="btn-success" onclick="openWindow()" />
+        }
         <table class="table">
             <thead>
                 <tr>
@@ -19,125 +29,12 @@
                     <td>所属栏目</td>
                     <td>类型</td>
                     <td>有效性</td>
-                    <td>Action</td>
+                    <td>视图控制器</td>
                 </tr>
             </thead>
             <tbody id="showTemplate"></tbody>
         </table>
     </div>
-    <script type="text/javascript">
-        init();
-
-        function init() {
-            var strHtml = "";
-            $.ajax({
-                url: "/Admin/SysTemplate/GetViewListByType",
-                async: false,
-                type: "post",
-                data: { "Type": 0 },
-                success: function (json) {
-                    if (json != null && json != undefined) {
-                        for (var i = 0; i < json.length; i++) {
-                            strHtml += "<tr>";
-                            strHtml += "<td><input type='checkbox' data-id=" + json[i].Id + " data-lever=" + json[i].Lever + " data-type=" + json[i].Type + " /></td>";
-                            strHtml += "<td>" + json[i].Id + "</td>";
-                            strHtml += "<td>" + json[i].Template + "</td>";
-                            strHtml += "<td>" + json[i].TemplateCode + "</td>";
-                            strHtml += "<td>" + json[i].ParentName + "</td>";
-                            strHtml += "<td>" + json[i].TypeName + "</td>";
-                            strHtml += "<td>" + json[i].VaildName + "</td>";
-                            strHtml += "<td><a href='/Admin/SysTemplate/Test?Id=" + json[i].Id + "'>添加</a></td>";
-                            strHtml += "</tr>";
-                        }
-                    }
-                }
-            });
-            $("#showTemplate").html(strHtml);
-        }
-
-        function getSigleCheck() {
-            var objcheckList = $("input[type='checkbox']");
-            if (objcheckList != null && objcheckList.length > 0) {
-                if (getCheckedCount(objcheckList) == 1) {
-                    for (var i = 0; i < objcheckList.length; i++) {
-                        if (objcheckList[i].checked) {
-                            var id = $(objcheckList[i]).attr("data-id");
-                            var lever = parseInt($(objcheckList[i]).attr("data-lever")) + 1;
-                            $("#ParentId").val(id);
-                            $("#Lever").val(lever);
-                            return true;
-                        }
-                    }
-                }
-                if (getCheckedCount(objcheckList) == 0) {
-                    return true;
-                }
-                if (getCheckedCount(objcheckList) > 1) {
-                    alert("只能选择一个");
-                    return false;
-                }
-            } else {
-                return true;
-            }
-        }
-
-        function getCheckedCount(obj) {
-            var count = 0;
-            if (obj != null && obj.length > 0) {
-                for (var i = 0; i < obj.length; i++) {
-                    if (obj[i].checked) {
-                        count++;
-                    }
-                }
-                return count;
-            }
-        }
-
-        function openWindow() {
-            if (getSigleCheck()) {
-            var windowH = $(window).height();
-            var windowW = $(window).width();
-            var offsetH = (windowH - 150) / 2;
-            var offsetw = (windowW - 300) / 2;
-            $("#windowMask").show();
-            $("#windowDiv").css("top", offsetH).css("left", offsetw).show();
-            }
-        }
-
-        function save() {
-            $.ajax({
-                url: "/SysTemplate/Add",
-                async: false,
-                data: { "ParentId": $("#ParentId").val(), "Template": $("#Template").val(), "TemplateCode": $("#TemplateCode").val(), "TemplateUrl": $("#TemplateUrl").val(), "Lever": $("#Lever").val() },
-                type: "post",
-                success: function (json) {
-                    if (json != null && json != undefined) {
-                        if (json.Flag) {
-                            alert("保存成功");
-                            closeWindow();
-                        } else {
-                            alert(json.Message);
-                        }
-                    }
-                }
-            });
-        }
-
-        function closeWindow() {
-            $("#windowDiv").hide();
-            $("#windowMask").hide();
-            $("#Id").val("");
-            $("#Template").val("");
-            $("#TemplateUrl").val("");
-            $("#ParentId").val("");
-            $("#Lever").val();
-            $("#TemplateCode").val("");
-        }
-
-    </script>
-</head>
-
-<body>
     <div class="content_wrap">
         <div class="zTreeDemoBackground left">
             <ul id="treeDemo" class="ztree"></ul>
@@ -145,7 +42,6 @@
     </div>
 </body>
 </html>
-
 <div id="windowMask"></div>
 <div id="windowDiv">
     <ul style="top: 30px; position: relative; text-align: center; list-style: none">
@@ -170,41 +66,5 @@
 </div>
 <input id="ParentId" type="hidden" value="0" />
 <input id="Lever" type="hidden" value="0" />
-<input id="Type" type="hidden" value="0" />
-<style type="text/css">
-    .ztree li span.button.add {
-        margin-left: 2px;
-        margin-right: -1px;
-        background-position: -144px 0;
-        vertical-align: top;
-        *vertical-align: middle;
-    }
-
-    .liSpace {
-        height: 5px;
-    }
-
-    #windowDiv {
-        display: none;
-        position: absolute;
-        width: 300px;
-        height: 150px;
-        z-index: 3;
-        background-color: #1E1E1E;
-        border: 1px solid #9CDFCE;
-        list-style: none;
-        color: white;
-    }
-
-    #windowMask {
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        opacity: 0.5;
-        background-color: black;
-        display: none;
-        z-index: 2;
-    }
-</style>
+<input id="Type" type="hidden" value="0"/>
+<script src="~/Scripts/Common/sysTemplate.js"></script>

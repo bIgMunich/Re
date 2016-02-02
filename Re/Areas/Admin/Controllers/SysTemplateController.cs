@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Models;
 using Common;
 using DAL;
+using Re.Models;
 
 namespace Re.Areas.Admin.Controllers
 {
@@ -25,6 +26,7 @@ namespace Re.Areas.Admin.Controllers
             return View();
         }
 
+        [RoleAction(FunctionNo = CompetenceModel.TemplateActionAdd)]
         public ActionResult Add(Sys_Template entity)
         {
             entity.Vaild = 1;
@@ -87,8 +89,9 @@ namespace Re.Areas.Admin.Controllers
             return Json(listObj, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ActionTree()
+        public ActionResult ActionTree(int RoleId)
         {
+            ViewBag.RoleId = RoleId;
             return View();
         }
 

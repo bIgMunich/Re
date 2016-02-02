@@ -5,6 +5,7 @@ using System.Text;
 using Common;
 using Base.BaseSql;
 using Models;
+using System.Web.Mvc;
 
 namespace DAL
 {
@@ -32,5 +33,7 @@ namespace DAL
             pars.Add(new SqlParam("UserId", userId));
             return new Helper<Sys_UserRole>().ExecuteList(sql, pars);
         }
+
+       
     }
 }

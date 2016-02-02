@@ -32,7 +32,7 @@ namespace Re.Models
             base.OnActionExecuted(filterContext);
         }
 
-        private bool ActionFlag(string FunctionNo)
+        public bool ActionFlag(string FunctionNo)
         {
             bool falg = false;
             List<SysTemplateViewModel> list = (List<SysTemplateViewModel>)HttpContext.Current.Session["menu"];
