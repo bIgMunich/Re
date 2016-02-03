@@ -8,19 +8,44 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <div style="width:100%; height:auto;">
-        <div id="top" style=" height:200px; float:left; width:100%">
-            this is head --------this is head
+    <div class="main">
+        <!--头部开始-->
+        <div id="top">
+            <div class="systemTitle">XXXXXXXXXXXX</div>
+            <div class="systemMenu">
+            
+                <div class="headImg">
+                    <img src="/Images/exit.png" title="logout" />
+                </div>
+                <div class="headImg">
+                    <img src="/Images/set-10.png" title="setting" />
+                </div>
+                <div class="headImg">
+                    <img src="/Images/head.jpg" title="head"/>
+                </div>
+                <div class="headWord">
+                    @Html.Raw("你好," + Session["UserName"] + "(" + Session["RoleName"] + ")")
+                </div>
+            </div>
         </div>
-        <div id="left" style=" height:700px; float:left; width:15%; background-color:#2F4050; margin-right:30px;">
+        <!--头部结束-->
+        <!--中间开始-->
+        <!--菜单栏开始-->
+        <div id="left">
             @Html.Partial("_menu");
         </div>
-        <div id="right" style=" height:auto; float:left; width:80%">
+        <!--菜单栏结束-->
+        <!--正文开始-->
+        <div id="right" >
             @RenderBody()
         </div>
-        <div id="bootom" style=" height:200px; float:left; width:100%">
-            bootom
+        <!--正文结束-->
+        <!--中间结束-->
+        <!--尾部开始-->
+        <div id="bootom">
+            this is bottom---------this is bottom
         </div>
+        <!--尾部结束-->
     </div>
     @RenderSection("scripts", required: false)
 

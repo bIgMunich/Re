@@ -1,6 +1,8 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using Re.Models;
+@using Models;
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +11,10 @@
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <script src="~/Content/zTree-zTree_v3-master/zTree_v3/js/jquery-1.4.4.min.js"></script>
     <div style="width: 100%">
-        <input id="btnAdd" name="btnAdd" type="button" value="添加" class="btn-success" onclick="openWindow()" />
+        @if (CompetenceMethod.ActionFlag(CompetenceModel.TemplateActionAdd))
+        {
+            <input id="btnAdd" name="btnAdd" type="button" value="添加" class="btn-success" onclick="openWindow()" />
+        }
         <table class="table">
             <thead>
                 <tr>

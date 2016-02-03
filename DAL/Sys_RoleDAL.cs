@@ -9,21 +9,30 @@ using Models;
 
 namespace DAL
 {
-   public class Sys_RoleDAL
+    public class Sys_RoleDAL
     {
-       public ErrorResult Insert(Sys_Role entity)
-       {
-           return new Helper<Sys_Role>().Insert(entity);
-       }
+        public ErrorResult Insert(Sys_Role entity)
+        {
+            return new Helper<Sys_Role>().Insert(entity);
+        }
 
-       public ErrorResult Update(Sys_Role entity)
-       {
-           return  new Helper<Sys_Role>().Update(entity);
-       }
+        public ErrorResult Update(Sys_Role entity)
+        {
+            return new Helper<Sys_Role>().Update(entity);
+        }
 
-       public List<Sys_Role> GetList()
-       {
-           return new Helper<Sys_Role>().ExecuteList("select * from Sys_Role",null);
-       }
+        public List<Sys_Role> GetList()
+        {
+            return new Helper<Sys_Role>().ExecuteList("select * from Sys_Role", null);
+        }
+
+        public Sys_Role GetModel(int Id)
+        {
+            Sys_Role entity = new Sys_Role();
+            //List<SqlParam> pars = new List<SqlParam>();
+            //pars.Add(new SqlParam("Id", Id));
+            entity.Id = Id;
+            return new Helper<Sys_Role>().Find(entity);
+        }
     }
 }

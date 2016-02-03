@@ -14,32 +14,33 @@
 </head>
 
 <body>
-    <div style="width: 100%">
-        @if (CompetenceMethod.ActionFlag(CompetenceModel.TemplateActionAdd))
-        {
-            <input id="btnAdd" name="btnAdd" type="button" value="添加" class="btn-success" onclick="openWindow()" />
-        }
-        <table class="table">
-            <thead>
-                <tr>
-                    <td>选择</td>
-                    <td>编号</td>
-                    <td>栏目名称</td>
-                    <td>栏目编码</td>
-                    <td>所属栏目</td>
-                    <td>类型</td>
-                    <td>有效性</td>
-                    <td>视图控制器</td>
-                </tr>
-            </thead>
-            <tbody id="showTemplate"></tbody>
-        </table>
+    <input id="CompetenceFlag" type="hidden" value="@CompetenceMethod.ActionFlag(CompetenceModel.TemplateActionAdd)" />
+<div style="width: 100%">
+    @if (CompetenceMethod.ActionFlag(CompetenceModel.TemplateActionAdd))
+    {
+        <input id="btnAdd" name="btnAdd" type="button" value="添加" class="btn-success" onclick="openWindow()"/>
+    }
+    <table class="table">
+        <thead>
+        <tr>
+            <td>选择</td>
+            <td>编号</td>
+            <td>栏目名称</td>
+            <td>栏目编码</td>
+            <td>所属栏目</td>
+            <td>类型</td>
+            <td>有效性</td>
+            <td>视图控制器</td>
+        </tr>
+        </thead>
+        <tbody id="showTemplate"></tbody>
+    </table>
+</div>
+<div class="content_wrap">
+    <div class="zTreeDemoBackground left">
+        <ul id="treeDemo" class="ztree"></ul>
     </div>
-    <div class="content_wrap">
-        <div class="zTreeDemoBackground left">
-            <ul id="treeDemo" class="ztree"></ul>
-        </div>
-    </div>
+</div>
 </body>
 </html>
 <div id="windowMask"></div>
@@ -56,11 +57,9 @@
         <li>模块编码:<input id="TemplateCode" type="text" /></li>
         <li class="liSpace"></li>
         <li>
-            <input id="btnAdd" type="button" value="保存" onclick="
-                save()" />
+            <input id="btnAdd" type="button" value="保存" onclick="save()" />
             &nbsp; &nbsp; &nbsp; &nbsp;
-            <input id="btnCalse" type="button" value="取消" onclick="
-                closeWindow()" />
+            <input id="btnCalse" type="button" value="取消" onclick="closeWindow()" />
         </li>
     </ul>
 </div>

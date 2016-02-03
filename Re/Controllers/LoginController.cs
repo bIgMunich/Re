@@ -35,6 +35,7 @@ namespace Re.Controllers
                 List<Sys_UserRole> userRoleList = new Sys_UserRoleDAL().GetList(entity.Id);
                 if (userRoleList != null && userRoleList.Count > 0)
                 {
+                    Session["RoleName"] = new Sys_RoleDAL().GetModel(userRoleList[0].RoleId).RoleName;
                     foreach (var item in userRoleList)
                     {
                         List<SysTemplateViewModel> templateItemList = new Sys_TemplateDAL().GetViewListByRoleId(item.RoleId);
@@ -42,6 +43,7 @@ namespace Re.Controllers
                         template.Union(templateItemList).ToList();
                     }
                 }
+                Session["UserName"] = model.UserName;
                 model.UserRoleList = userRoleList;
                 model.ActionList = template;
                 Session["data"] = model;

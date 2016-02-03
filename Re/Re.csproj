@@ -742,9 +742,12 @@
     <Content Include="Areas\Admin\Views\SysTemplate\Test.cshtml" />
     <Content Include="Areas\Admin\Views\SysTemplate\ActionTree.cshtml" />
     <None Include="Scripts\jquery-1.9.0.intellisense.js" />
+    <Content Include="Images\exit.png" />
+    <Content Include="Images\head.jpg" />
     <Content Include="Images\locked.png" />
     <Content Include="Images\login-background.jpg" />
     <Content Include="Images\logo.png" />
+    <Content Include="Images\set-10.png" />
     <Content Include="Images\user.png" />
     <Content Include="Scripts\App\Pager.js" />
     <Content Include="Scripts\bootstrap.js" />

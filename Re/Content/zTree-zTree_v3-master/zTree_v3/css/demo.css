@@ -1,4 +1,4 @@
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+/*html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
     margin: 0;
     padding: 0;
     border: 0;
@@ -13,7 +13,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 body {
     color: #2f332a;
     font: 15px/21px Arial, Helvetica, simsun, sans-serif;
-    background: #f0f6e4 \9;
+    background: #f0f6e4;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -41,7 +41,7 @@ h6 {
     letter-spacing: 1px;
     line-height: 24px;
     text-align: center;
-}
+}*/
 
 a {
     color: #3C6E31;
@@ -90,7 +90,7 @@ div.content_wrap {
     div.content_wrap div.right {
         float: right;
         width: 340px;
-    }
+    }*/
 
 div.zTreeDemoBackground {
     width: 250px;
