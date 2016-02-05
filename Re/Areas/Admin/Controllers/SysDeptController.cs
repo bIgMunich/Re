@@ -19,6 +19,7 @@ namespace Re.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
+          
             var obj = Session["UserName"];
             return View();
         }
