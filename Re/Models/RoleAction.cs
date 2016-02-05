@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Common;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Re.Models
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+
             if (ActionFlag(FunctionNo) == true)
             {
                 base.OnActionExecuting(filterContext);

@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using Models;
 using DAL;
 using Common;
+using Re.Controllers;
+using Re.Models;
 
 
 namespace Re.Areas.Admin.Controllers
@@ -17,9 +19,11 @@ namespace Re.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
+            var obj = Session["UserName"];
             return View();
         }
 
+        [RoleAction(FunctionNo = CompetenceModel.DeptAdd)]
         public ActionResult Add(Sys_Dept entity)
         {
             entity.DeptLever = 0;
@@ -27,9 +31,32 @@ namespace Re.Areas.Admin.Controllers
             return Json(result);
         }
 
+        [RoleAction(FunctionNo = CompetenceModel.DeptEdit)]
         public ActionResult Update(Sys_Dept entity)
         {
             ErrorResult result = new Sys_DeptDAL().Update(entity);
+            return Json(result);
+        }
+
+        [RoleAction(FunctionNo = CompetenceModel.DeptDelete)]
+        public ActionResult Delete(int Id)
+        {
+            ErrorResult result = new ErrorResult();
+            List<Sys_Dept> listDept = new Sys_DeptDAL().GetList(Id);
+            if (listDept != null && listDept.Count > 0)
+            {
+                result.Flag = false;
+                result.Message = "此部门下面有子部门或者人员";
+                return Json(result);
+            }
+            List<Sys_User> listUser = new Sys_UserDAL().GetList(Id);
+            if (listUser != null && listUser.Count > 0)
+            {
+                result.Flag = false;
+                result.Message = "此部门下面有子部门或者人员";
+                return Json(result);
+            }
+            result = new Sys_DeptDAL().Delete(Id);
             return Json(result);
         }
 
@@ -48,6 +75,7 @@ namespace Re.Areas.Admin.Controllers
             modelRoot.id = 0;
             modelRoot.pId = -1;
             modelRoot.name = "Root";
+            modelRoot.open = true;
             listObj.Add(modelRoot);
             if (list != null && list.Count > 0)
             {
@@ -57,6 +85,7 @@ namespace Re.Areas.Admin.Controllers
                     model.id = item.Id;
                     model.pId = item.ParentId;
                     model.name = item.DeptName;
+                    model.open = true;
                     listObj.Add(model);
                 }
             }
@@ -119,9 +148,8 @@ namespace Re.Areas.Admin.Controllers
     {
         public int id { get; set; }
         public int pId { get; set; }
-
         public string name { get; set; }
-
+        public bool open { get; set; }
         public string obj1 { get; set; }
         public string obj2 { get; set; }
         public string obj3 { get; set; }

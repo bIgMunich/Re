@@ -8,6 +8,7 @@
     @{
         LoginUser user = (LoginUser)Session["data"];
         List<SysTemplateViewModel> list = user.ActionList;
+        List<Sys_UserRole> listUserRole = user.UserRoleList;
     }
     <ul class="bigMenu">
         @{if (list != null && list.Count > 0)
@@ -18,23 +19,26 @@
                 {
                     <li>
                         <a href="@item.TemplateUrl">@item.Template</a>
-                        @{List<SysTemplateViewModel> listSecod = new Sys_TemplateDAL().GetViewlListByType(0, item.Id);}
-                        @if (listSecod != null && listSecod.Count > 0)
+                        @if (listUserRole != null && listUserRole.Count > 0)
                         {
-                            <ul class="smallMenu">
-                                @foreach (var itemSecond in listSecod)
-                                {
-                                    <li>
-                                        <a href="@itemSecond.TemplateUrl">@itemSecond.Template</a>
-                                    </li>
-                                }
-                            </ul>
+                            List<SysTemplateViewModel> listSecod = new Sys_TemplateDAL().GetViewlListByType(0, item.Id, listUserRole[0].RoleId);
+                            if (listSecod != null && listSecod.Count > 0)
+                            {
+                                <ul class="smallMenu">
+                                    @foreach (var itemSecond in listSecod)
+                                    {
+                                        <li>
+                                            <a href="@itemSecond.TemplateUrl">@itemSecond.Template</a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
                         }
                     </li>
                 }
+
             }
         }
         }
     </ul>
 </div>
-

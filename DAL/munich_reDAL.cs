@@ -15,13 +15,13 @@ namespace DAL
         public List<munich_re> GetList()
         {
             string sql = "select * from munich_re  order by Id desc";
-            List<munich_re> list = new Helper<munich_re>().ExecuteList(sql, null);
+            List<munich_re> list = new Helper().ExecuteList<munich_re>(sql, null);
             return list;
         }
 
         public ErrorResult Insert(munich_re entity)
         {
-            ErrorResult result = new Helper<munich_re>().Insert(entity);
+            ErrorResult result = new Helper().Insert(entity);
             return result;
         }
 
@@ -29,19 +29,19 @@ namespace DAL
         {
             munich_re obj = new munich_re();
             obj.Id = Id;
-            obj = new Helper<munich_re>().Find(obj);
+            obj = new Helper().Find(obj);
             return obj;
         }
 
         public ErrorResult Update(munich_re entity)
         {
-            ErrorResult result = new Helper<munich_re>().Update(entity);
+            ErrorResult result = new Helper().Update(entity);
             return result;
         }
 
         public ObjEntity GetPagerList(PagerInfo pageInfo, List<SqlParamList> list)
         {
-            ObjEntity result = new Helper<munich_re>().ExecutePage(new munich_re(), pageInfo, list);
+            ObjEntity result = new Helper().ExecutePage(new munich_re(), pageInfo, list);
             return result;
         }
 
@@ -51,7 +51,7 @@ namespace DAL
             sb.Append("select * from munich_re where IsTrue=@IsTrue");
             List<SqlParam> list = new List<SqlParam>();
             list.Add(new SqlParam("IsTrue", 0));
-            return new Helper<munich_re>().ExecuteDataTable(sb.ToString(), list);
+            return new Helper().ExecuteDataTable(sb.ToString(), list);
         }
 
         public ObjEntity GetDataTablePager(PagerInfo pageInfo)
@@ -60,7 +60,7 @@ namespace DAL
             sb.Append("select * from munich_re where IsTrue=@IsTrue");
             List<SqlParam> list = new List<SqlParam>();
             list.Add(new SqlParam("IsTrue", 0));
-            return new Helper<munich_re>().ExecuteDataTablePagerInfo(sb.ToString(), list, pageInfo);
+            return new Helper().ExecuteDataTablePagerInfo(sb.ToString(), list, pageInfo);
         }
 
     }

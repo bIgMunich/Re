@@ -20,7 +20,7 @@ namespace Re.Areas.Admin.Controllers
             return View();
         }
 
-        //[RoleAction(FunctionNo = "S1-1-1")]
+       [RoleAction(FunctionNo = CompetenceModel.UserAdd)]
         public ActionResult Add(Sys_User entity)
         {
             entity.Password = "123456";
@@ -28,6 +28,7 @@ namespace Re.Areas.Admin.Controllers
             return Json(result);
         }
 
+          [RoleAction(FunctionNo = CompetenceModel.UserEdit)]
         public ActionResult Update(Sys_User entity)
         {
             ErrorResult result = new Sys_UserDAL().Update(entity);

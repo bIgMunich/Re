@@ -145,7 +145,7 @@ function save() {
         data: { "DeptId": $("#DeptId").val(), "RealName": $("#RealName").val(), "Account": $("#Account").val(), "Type": $("Type").val() },
         success: function (json) {
             if (json != null && json != undefined) {
-                if (json.Flag == true) {
+                if (json.Flag) {
                     alert("保存成功");
                     getDataByDeptId($("#DeptId").val());
                     $("#windowMask").hide();
@@ -169,7 +169,6 @@ function saveRole(obj) {
             success: function (json) {
                 if (json != null && json != undefined) {
                     if (json.Flag) {
-
                     } else {
                         alert(json.Message);
                         self.attr("checked", false);

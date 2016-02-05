@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Models;
 using DAL;
+using Re.Models;
 
 namespace Re.Areas.Admin.Controllers
 {
@@ -23,6 +24,7 @@ namespace Re.Areas.Admin.Controllers
             return View();
         }
 
+        [RoleAction(FunctionNo = CompetenceModel.RoleAdd)]
         public ActionResult Add(Sys_Role entity)
         {
             return Json(new Sys_RoleDAL().Insert(entity));

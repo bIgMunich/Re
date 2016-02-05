@@ -48,6 +48,7 @@ namespace Re.Controllers
                 model.ActionList = template;
                 Session["data"] = model;
                 Session["menu"] = template;
+                SessionHelper.Add("Re_USER_OBJ", model.UserName, 60);
             }
             else
             {
@@ -55,6 +56,12 @@ namespace Re.Controllers
                 result.Message = "用户名或者密码";
             }
             return Json(result);
+        }
+
+        public ActionResult LogOut()
+        {
+            Session.Clear();
+            return Redirect("/Home/Login");
         }
 
     }

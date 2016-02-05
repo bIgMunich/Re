@@ -10,7 +10,7 @@ using System.Data.SqlClient;
 using Common;
 namespace Base.BaseSql
 {
-    public class Helper<T> where T : new()
+    public class Helper
     {
         private string providerName { get; set; }
         private string connectionString { get; set; }
@@ -39,7 +39,7 @@ namespace Base.BaseSql
             helper = Factory.SqlHelpers(this.providerName);
         }
 
-        public ErrorResult Insert(T entity)
+        public ErrorResult Insert<T>(T entity) where T : new()
         {
             ErrorResult result = new ErrorResult();
             Type type = entity.GetType();
@@ -94,7 +94,7 @@ namespace Base.BaseSql
             return result;
         }
 
-        public ErrorResult Update(T entity)
+        public ErrorResult Update<T>(T entity) where T : new()
         {
             ErrorResult result = new ErrorResult();
             Type t = entity.GetType();
@@ -145,7 +145,7 @@ namespace Base.BaseSql
         /// <typeparam name="T"></typeparam>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public T Find(T entity)
+        public T Find<T>(T entity) where T : new()
         {
             ErrorResult result = new ErrorResult();
             Type t = entity.GetType();
@@ -191,7 +191,7 @@ namespace Base.BaseSql
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public T Find(T entity, List<string> paramFileds, List<object> paramValues)
+        public T Find<T>(T entity, List<string> paramFileds, List<object> paramValues) where T : new()
         {
             ErrorResult result = new ErrorResult();
             Type t = entity.GetType();
@@ -212,19 +212,19 @@ namespace Base.BaseSql
             return obj;
         }
 
-        public T ExecuteEntity(string sql)
+        public T ExecuteEntity<T>(string sql) where T : new()
         {
             return helper.ExecuteEntity<T>(connectionString, CommandType.Text, sql, null);
         }
 
-        public List<T> ExecuteList(string sql, List<SqlParam> list)
+        public List<T> ExecuteList<T>(string sql, List<SqlParam> list) where T : new()
         {
             return helper.ExecuteList<T>(connectionString, CommandType.Text, sql, list);
         }
 
 
 
-        public ObjEntity ExecutePage(T entity, PagerInfo pageInfo, List<SqlParamList> list)
+        public ObjEntity ExecutePage<T>(T entity, PagerInfo pageInfo, List<SqlParamList> list) where T : new()
         {
             List<T> lists = new List<T>();
             ObjEntity obj = new ObjEntity();

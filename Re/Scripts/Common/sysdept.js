@@ -2,12 +2,13 @@
 var setting = {
     view: {
         addHoverDom: addHoverDom,
+        removeHoverDom: removeHoverDom,
         selectedMulti: false
     },
     edit: {
         enable: true,
         editNameSelectAll: true,
-        showRemoveBtn: false,
+        showRemoveBtn: true,
         showRenameBtn: true
     },
     data: {
@@ -18,10 +19,42 @@ var setting = {
     callback: {
         beforeDrag: beforeDrag,
         beforeEditName: beforeEditName,
-        onRename: onRename
+        beforeRemove: beforeRemove,
+        onRename: onRename,
+        onRemove: onRemove,
     }
 };
 
+function removeHoverDom(treeId, treeNode) {
+};
+
+function showRemoveBtn(treeId, treeNode) {
+    return !treeNode;
+}
+
+function beforeRemove(treeId, treeNode) {
+    className = (className === "dark" ? "" : "dark");
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+    zTree.selectNode(treeNode);
+    return confirm("确认删除 节点 -- " + treeNode.name + " 吗？");
+}
+
+function onRemove(e, treeId, treeNode) {
+    $.ajax({
+        url: "/SysDept/Delete",
+        async: false,
+        type: "post",
+        data: { "Id": treeNode.id },
+        success: function (json) {
+            if (json.Flag) {
+                $.fn.zTree.init($("#treeDemo"), setting, getData());
+            } else {
+                alert(json.Message);
+                $.fn.zTree.init($("#treeDemo"), setting, getData());
+            }
+        }
+    });
+}
 
 function getData() {
     var zNodes = "";
@@ -47,9 +80,6 @@ function beforeEditName(treeId, treeNode) {
 
 function onRename(e, treeId, treeNode, isCancel) {
     showLog((isCancel ? "<span style='color:red'>" : "") + "[ " + getTime() + " onRename ]&nbsp;&nbsp;&nbsp;&nbsp; " + treeNode.name + (isCancel ? "</span>" : ""));
-}
-function showRemoveBtn(treeId, treeNode) {
-    return !treeNode.isFirstNode;
 }
 
 function showLog(str) {
@@ -114,13 +144,17 @@ function Add() {
             data: { "ParentId": $("#ParentId").val(), "DeptCode": $("#DeptCode").val(), "DeptName": $("#DeptName").val() },
             type: "post",
             success: function (json) {
-                $("#windowDiv").hide();
-                $("#windowMask").hide();
-                $("#Id").val("");
-                $("#DeptName").val("");
-                $("#DeptCode").val("");
-                $("#ParentId").val("");
-                $.fn.zTree.init($("#treeDemo"), setting, getData());
+                if (json.Flag) {
+                    $("#windowDiv").hide();
+                    $("#windowMask").hide();
+                    $("#Id").val("");
+                    $("#DeptName").val("");
+                    $("#DeptCode").val("");
+                    $("#ParentId").val("");
+                    $.fn.zTree.init($("#treeDemo"), setting, getData());
+                } else {
+                    alert(json.Message);
+                }
             }
         });
     } else {
@@ -130,13 +164,17 @@ function Add() {
             data: { "ParentId": $("#ParentId").val(), "Id": $("#Id").val(), "DeptCode": $("#DeptCode").val(), "DeptName": $("#DeptName").val() },
             type: "post",
             success: function (json) {
-                $("#windowDiv").hide();
-                $("#windowMask").hide();
-                $("#Id").val("");
-                $("#DeptName").val("");
-                $("#DeptCode").val("");
-                $("#ParentId").val("");
-                $.fn.zTree.init($("#treeDemo"), setting, getData());
+                if (json.Flag) {
+                    $("#windowDiv").hide();
+                    $("#windowMask").hide();
+                    $("#Id").val("");
+                    $("#DeptName").val("");
+                    $("#DeptCode").val("");
+                    $("#ParentId").val("");
+                    $.fn.zTree.init($("#treeDemo"), setting, getData());
+                } else {
+                    alert(json.Message);
+                }
             }
         });
     }

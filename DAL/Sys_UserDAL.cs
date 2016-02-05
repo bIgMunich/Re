@@ -12,13 +12,13 @@ namespace DAL
     {
         public ErrorResult Insert(Sys_User entity)
         {
-            ErrorResult result = new Helper<Sys_User>().Insert(entity);
+            ErrorResult result = new Helper().Insert(entity);
             return result;
         }
 
         public ErrorResult Update(Sys_User entity)
         {
-            ErrorResult result = new Helper<Sys_User>().Update(entity);
+            ErrorResult result = new Helper().Update(entity);
             return result;
         }
 
@@ -27,14 +27,14 @@ namespace DAL
             string sql = "select * from Sys_User where DeptId=@DeptId";
             List<SqlParam> list = new List<SqlParam>();
             list.Add(new SqlParam("DeptId", DeptId));
-            return new Helper<Sys_User>().ExecuteList(sql, list);
+            return new Helper().ExecuteList<Sys_User>(sql, list);
         }
 
         public Sys_User GetModel(int Id)
         {
             Sys_User entity = new Sys_User();
             entity.Id = Id;
-            return new Helper<Sys_User>().Find(entity);
+            return new Helper().Find(entity);
         }
 
         public Sys_User Login(string account, string password)
@@ -43,7 +43,7 @@ namespace DAL
             List<SqlParam> pars = new List<SqlParam>();
             pars.Add(new SqlParam("Account", account));
             pars.Add(new SqlParam("Password", password));
-            List<Sys_User> list = new Helper<Sys_User>().ExecuteList(sql, pars);
+            List<Sys_User> list = new Helper().ExecuteList<Sys_User>(sql, pars);
             if (list != null && list.Count > 0)
             {
                 return list[0];
@@ -54,7 +54,7 @@ namespace DAL
             }
         }
 
-        
+
 
         //public List<LoginUser> GetLoginUser(string userId)
         //{

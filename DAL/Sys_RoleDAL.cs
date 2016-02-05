@@ -13,17 +13,17 @@ namespace DAL
     {
         public ErrorResult Insert(Sys_Role entity)
         {
-            return new Helper<Sys_Role>().Insert(entity);
+            return new Helper().Insert(entity);
         }
 
         public ErrorResult Update(Sys_Role entity)
         {
-            return new Helper<Sys_Role>().Update(entity);
+            return new Helper().Update(entity);
         }
 
         public List<Sys_Role> GetList()
         {
-            return new Helper<Sys_Role>().ExecuteList("select * from Sys_Role", null);
+            return new Helper().ExecuteList<Sys_Role>("select * from Sys_Role", null);
         }
 
         public Sys_Role GetModel(int Id)
@@ -32,7 +32,7 @@ namespace DAL
             //List<SqlParam> pars = new List<SqlParam>();
             //pars.Add(new SqlParam("Id", Id));
             entity.Id = Id;
-            return new Helper<Sys_Role>().Find(entity);
+            return new Helper().Find(entity);
         }
     }
 }

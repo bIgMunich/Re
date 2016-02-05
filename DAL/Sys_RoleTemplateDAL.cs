@@ -12,13 +12,13 @@ namespace DAL
     {
         public ErrorResult Insert(Sys_RoleTemplate entity)
         {
-            ErrorResult result = new Helper<Sys_RoleTemplate>().Insert(entity);
+            ErrorResult result = new Helper().Insert(entity);
             return result;
         }
 
         public ErrorResult Update(Sys_RoleTemplate entity)
         {
-            ErrorResult result = new Helper<Sys_RoleTemplate>().Update(entity);
+            ErrorResult result = new Helper().Update(entity);
             return result;
         }
 
@@ -28,7 +28,7 @@ namespace DAL
             List<SqlParam> pars = new List<SqlParam>();
             pars.Add(new SqlParam("RoleId", RoleId));
             pars.Add(new SqlParam("ActionId", ActionId));
-            return new Helper<Sys_RoleTemplate>().Delete(sql, pars);
+            return new Helper().Delete(sql, pars);
         }
 
         public List<Sys_RoleTemplate> GetList(int RoleId)
@@ -36,7 +36,7 @@ namespace DAL
             string sql = "select * from Sys_RoleTemplate where RoleId=@RoleId";
             List<SqlParam> pars = new List<SqlParam>();
             pars.Add(new SqlParam("RoleId", RoleId));
-            return new Helper<Sys_RoleTemplate>().ExecuteList(sql, pars);
+            return new Helper().ExecuteList<Sys_RoleTemplate>(sql, pars);
         }
 
     }

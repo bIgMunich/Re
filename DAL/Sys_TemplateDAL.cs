@@ -26,13 +26,13 @@ namespace DAL
                 result.Message = "栏目编码不能重复";
                 return result;
             }
-            result = new Helper<Sys_Template>().Insert(entity);
+            result = new Helper().Insert(entity);
             return result;
         }
 
         public ErrorResult Update(Sys_Template entity)
         {
-            ErrorResult result = new Helper<Sys_Template>().Update(entity);
+            ErrorResult result = new Helper().Update(entity);
             return result;
         }
 
@@ -40,7 +40,7 @@ namespace DAL
         {
             Sys_Template entity = new Sys_Template();
             entity.Id = Id;
-            Sys_Template model = new Helper<Sys_Template>().Find(entity);
+            Sys_Template model = new Helper().Find(entity);
             return model;
         }
 
@@ -49,7 +49,7 @@ namespace DAL
             string sql = "select * from Sys_Template where ParentId=@ParentId";
             List<SqlParam> pars = new List<SqlParam>();
             pars.Add(new SqlParam("ParentId", ParentId));
-            return new Helper<Sys_Template>().ExecuteList(sql, pars);
+            return new Helper().ExecuteList<Sys_Template>(sql, pars);
         }
 
         public int GetCountByCode(string TemplateCode)
@@ -57,7 +57,7 @@ namespace DAL
             string sql = "select count(Id) from Sys_Template where TemplateCode=@TemplateCode";
             List<SqlParam> pars = new List<SqlParam>();
             pars.Add(new SqlParam("TemplateCode", TemplateCode));
-            return new Helper<Sys_Template>().ExecuteScalar(sql, pars);
+            return new Helper().ExecuteScalar(sql, pars);
         }
 
         public List<SysTemplateViewModel> GetViewlListByType(int Type = 0)
@@ -65,7 +65,7 @@ namespace DAL
             string sql = "select a.*,(select Template from Sys_Template where Id=a.ParentId) as ParentName  from Sys_Template a where Type=@Type";
             List<SqlParam> pars = new List<SqlParam>();
             pars.Add(new SqlParam("Type", Type));
-            return new Helper<SysTemplateViewModel>().ExecuteList(sql, pars);
+            return new Helper().ExecuteList<SysTemplateViewModel>(sql, pars);
         }
 
         public List<SysTemplateViewModel> GetViewlListByType(int Type, int ParentId)
@@ -74,7 +74,17 @@ namespace DAL
             List<SqlParam> pars = new List<SqlParam>();
             pars.Add(new SqlParam("Type", Type));
             pars.Add(new SqlParam("ParentId", ParentId));
-            return new Helper<SysTemplateViewModel>().ExecuteList(sql, pars);
+            return new Helper().ExecuteList<SysTemplateViewModel>(sql, pars);
+        }
+
+        public List<SysTemplateViewModel> GetViewlListByType(int Type, int ParentId, int RoleId)
+        {
+            string sql = "select a.*,(select Template from Sys_Template where Id=a.ParentId) as ParentName  from Sys_Template a where Type=@Type and ParentId=@ParentId and a.Id in(select ActionId from Sys_RoleTemplate where RoleId=@RoleId)";
+            List<SqlParam> pars = new List<SqlParam>();
+            pars.Add(new SqlParam("Type", Type));
+            pars.Add(new SqlParam("ParentId", ParentId));
+            pars.Add(new SqlParam("RoleId", RoleId));
+            return new Helper().ExecuteList<SysTemplateViewModel>(sql, pars);
         }
 
         public List<SysTemplateViewModel> GetViewListByRoleId(int roleId)
@@ -82,7 +92,7 @@ namespace DAL
             string sql = "select a.* from sys_template a INNER JOIN sys_roletemplate b on b.ActionId=a.Id where b.RoleId=@RoleId";
             List<SqlParam> pars = new List<SqlParam>();
             pars.Add(new SqlParam("roleId", roleId));
-            return new Helper<SysTemplateViewModel>().ExecuteList(sql, pars);
+            return new Helper().ExecuteList<SysTemplateViewModel>(sql, pars);
         }
     }
 }

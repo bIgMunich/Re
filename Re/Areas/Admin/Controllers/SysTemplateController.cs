@@ -33,6 +33,7 @@ namespace Re.Areas.Admin.Controllers
             return Json(new Sys_TemplateDAL().Insert(entity));
         }
 
+         [RoleAction(FunctionNo = CompetenceModel.TemplateActionEdit)]
         public ActionResult Edit(Sys_Template entity)
         {
             return Json(new Sys_TemplateDAL().Update(entity));

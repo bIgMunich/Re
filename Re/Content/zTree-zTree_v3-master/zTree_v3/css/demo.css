@@ -43,7 +43,7 @@ h6 {
     text-align: center;
 }*/
 
-a {
+/*a {
     color: #3C6E31;
     text-decoration: underline;
 }
@@ -51,7 +51,7 @@ a {
     a:hover {
         background-color: #3C6E31;
         color: white;
-    }
+    }*/
 
 input.radio {
     margin: 0 2px 0 8px;

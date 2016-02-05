@@ -45,9 +45,11 @@
     <Compile Include="DbEnum.cs" />
     <Compile Include="DBEntity.cs" />
     <Compile Include="ErrorResult.cs" />
+    <Compile Include="JsScriptHelper.cs" />
     <Compile Include="PagerHelper.cs" />
     <Compile Include="PagerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SessionHelper.cs" />
     <Compile Include="SqlParam.cs" />
     <Compile Include="SqlParamList.cs" />
     <Compile Include="UrlComHelper.cs" />
