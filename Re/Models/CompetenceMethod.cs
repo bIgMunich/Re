@@ -6,6 +6,7 @@ using System.Web;
 
 namespace Re.Models
 {
+  
     public static class CompetenceMethod
     {
         public static bool ActionFlag(string FunctionNo)
