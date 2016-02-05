@@ -139,7 +139,6 @@
     <Compile Include="Areas\Admin\Controllers\SysUserController.cs" />
     <Compile Include="Areas\Admin\Controllers\SysUserRoleController.cs" />
     <Compile Include="Areas\Admin\Models\Class1.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -148,6 +147,7 @@
     </Compile>
     <Compile Include="Models\CompetenceMethod.cs" />
     <Compile Include="Models\RoleAction.cs" />
+    <Compile Include="Models\UserAuthAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -815,6 +815,7 @@
     <Content Include="Scripts\layer\layim\data\friend.json" />
     <Content Include="Scripts\layer\layim\data\group.json" />
     <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Shared\_top.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -67,6 +67,7 @@ namespace Common
             //string js = "<script language=javascript>alert('{0}');top.location.href='{1}'</script>";
             HttpContext.Current.Response.Write(string.Format(js, message, toUrl));
             HttpContext.Current.Response.End();
+            //HttpContext.
             #endregion
         }
 

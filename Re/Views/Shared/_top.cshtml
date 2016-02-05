@@ -1,0 +1,29 @@
+﻿<div id="top">
+    <div class="systemTitle">XXXXXXXXXXXX</div>
+    <div class="systemMenu">
+        <div class="headImg" id="logout">
+            <img src="/Images/exit.png" title="logout" />
+        </div>
+        <div class="headImg" id="setting">
+            <img src="/Images/set-10.png" title="setting" />
+        </div>
+        <div class="headImg">
+            <img src="/Images/head.jpg" title="head" />
+        </div>
+        <div class="headWord">
+            @Html.Raw("你好," + Session["UserName"] + "(" + Session["RoleName"] + ")")
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $("#logout").click(function () {
+        if (confirm("确定退出系统？")) {
+            window.location.href = "/Login/LogOut";
+        }
+    });
+    $("#setting").click(function () {
+        alert("你正在修改密码。。。。。修改完毕");
+    });
+</script>
