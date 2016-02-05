@@ -9,6 +9,7 @@ using Common;
 
 namespace Re.Controllers
 {
+     [AllowAnonymous]
     public class LoginController : Controller
     {
         //

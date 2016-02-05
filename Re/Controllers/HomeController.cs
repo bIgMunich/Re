@@ -10,7 +10,8 @@ using System.Data;
 
 namespace Re.Controllers
 {
-    public class HomeController : Controller
+    [AllowAnonymous]
+    public class HomeController :Controller
     {
         //
         // GET: /Home/
