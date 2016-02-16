@@ -21,9 +21,15 @@ namespace DAL
             return new Helper().Update(entity);
         }
 
-        public List<Sys_Role> GetList()
+        //public List<Sys_Role> GetList()
+        //{
+        //    return new Helper().ExecuteList<Sys_Role>("select * from Sys_Role", null);
+        //}
+
+        public ObjEntity GetList(PagerInfo pageInfo)
         {
-            return new Helper().ExecuteList<Sys_Role>("select * from Sys_Role", null);
+            string sql = "select * from Sys_Role ";
+            return new Helper().ExecutePages<Sys_Role>(sql, pageInfo, null);
         }
 
         public Sys_Role GetModel(int Id)

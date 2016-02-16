@@ -1,20 +1,25 @@
 ﻿
 init();
-function init() {
+function init(p) {
     var strHtml = "";
     $.ajax({
         url: "/SysRole/GetList",
         async: false,
         type: "post",
+        data: p,
         success: function (json) {
             if (json != null && json != undefined) {
-                for (var i = 0; i < json.length; i++) {
-                    strHtml += "<tr>";
-                    strHtml += "<td>" + json[i].Id + "</td>";
-                    strHtml += "<td>" + json[i].RoleName + "</td>";
-                    strHtml += '<td><a href="/Admin/SysTemplate/ActionTree?RoleId=' + json[i].Id + '">授权</a></td>';
-                    strHtml += "</tr>";
+                if (json.data != null) {
+                    for (var i = 0; i < json.data.length; i++) {
+                        strHtml += "<tr>";
+                        strHtml += "<td>" + json.data[i].Id + "</td>";
+                        strHtml += "<td>" + json.data[i].RoleName + "</td>";
+                        strHtml += '<td><a href="/Admin/SysTemplate/ActionTree?RoleId=' + json.data[i].Id + '">授权</a></td>';
+                        strHtml += "</tr>";
+                    }
+                    paerSpance.getpager(json.pager, p, init);
                 }
+
             }
         }
     });

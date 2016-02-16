@@ -54,6 +54,14 @@ namespace DAL
             }
         }
 
+        public ObjEntity GetList(int DeptId, PagerInfo pageInfo)
+        {
+            string sql = "select * from Sys_User where DeptId=@DeptId";
+            List<SqlParam> list = new List<SqlParam>();
+            list.Add(new SqlParam("DeptId", DeptId));
+            return new Helper().ExecutePages<Sys_User>(sql, pageInfo, list);
+        }
+
 
 
         //public List<LoginUser> GetLoginUser(string userId)

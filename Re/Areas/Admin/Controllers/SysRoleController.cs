@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Models;
 using DAL;
 using Re.Models;
+using Common;
 
 namespace Re.Areas.Admin.Controllers
 {
@@ -13,7 +14,7 @@ namespace Re.Areas.Admin.Controllers
     {
         //
         // GET: /Admin/SysRole/
-        
+
         public ActionResult Index()
         {
             return View();
@@ -30,9 +31,12 @@ namespace Re.Areas.Admin.Controllers
             return Json(new Sys_RoleDAL().Insert(entity));
         }
 
-        public ActionResult GetList()
+        public ActionResult GetList(int page = 1)
         {
-            return Json(new Sys_RoleDAL().GetList(), JsonRequestBehavior.AllowGet);
+            PagerInfo pi = new PagerInfo();
+            pi.CurrenetPageIndex = page;
+            ObjEntity list = new Sys_RoleDAL().GetList(pi);
+            return Json(new { data = list.ResultData, pager = list.ResultPager });
         }
     }
 }

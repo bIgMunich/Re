@@ -82,8 +82,8 @@ namespace Base.BaseSql
         public ErrorResult Delete(string sql, List<SqlParam> pars)
         {
             ErrorResult result = new ErrorResult();
-            int res= helper.ExecuteNonQuery(connectionString, CommandType.Text, sql, pars);
-            if(res>0)
+            int res = helper.ExecuteNonQuery(connectionString, CommandType.Text, sql, pars);
+            if (res > 0)
             {
                 result.Flag = true;
             }
@@ -222,6 +222,44 @@ namespace Base.BaseSql
             return helper.ExecuteList<T>(connectionString, CommandType.Text, sql, list);
         }
 
+        public ObjEntity ExecutePages<T>(string sql, PagerInfo pageInfo, List<SqlParam> listParam) where T : new()
+        {
+            List<T> lists = new List<T>();
+            ObjEntity obj = new ObjEntity();
+            PagerInfo result = new PagerInfo();
+            StringBuilder sb = new StringBuilder();
+            int objCount = 0;
+            string sql1 = string.Format("SELECT COUNT(1) FROM ({0}) T1", sql);
+            object o = helper.ExecuteScalar(connectionString, CommandType.Text, sql1, listParam);
+            if (o != null)
+            {
+                objCount = Convert.ToInt32(o);
+            }
+
+            if (objCount > 0)
+            {
+                result.ItemCount = objCount;
+                result.PageCount = (int)Math.Ceiling((float)result.ItemCount / pageInfo.PageSize);
+                if (result.CurrenetPageIndex > result.PageCount)
+                {
+                    pageInfo.CurrenetPageIndex = result.PageCount;
+                }
+                string wheres = " limit " + (pageInfo.CurrenetPageIndex - 1) * pageInfo.PageSize + "," + pageInfo.PageSize;
+                StringBuilder sb2 = new StringBuilder();
+                sb.Append(sql).Append(" ").Append(wheres);
+                lists = helper.ExecuteList<T>(connectionString, CommandType.Text, sb.ToString(), listParam);
+                result.CurrenetPageIndex = pageInfo.CurrenetPageIndex;
+                result.PageSize = pageInfo.PageSize;
+                result.PageCount = result.PageCount;
+            }
+            else
+            {
+                result.ItemCount = 0;
+            }
+            obj.ResultData = lists;
+            obj.ResultPager = result;
+            return obj;
+        }
 
 
         public ObjEntity ExecutePage<T>(T entity, PagerInfo pageInfo, List<SqlParamList> list) where T : new()

@@ -1,46 +1,43 @@
-﻿var preViewIndex;
-var nextIndex;
-var indexFlag = 0;
-function init(pagerCount, currentPager) {
-    if (currentPager == 0) {
-        preViewIndex = 0;
-    } else {
-        preViewIndex = parseInt(currentPager) - 1;
+﻿var paerSpance = {
+    getpager: function (self, p, func) {
+        var strhtml = "";
+        var currentIndex = self.CurrenetPageIndex;
+        if (self.PageCount > 0 && self.PageCount <= 10) {
+            for (var i = 1; i <= self.PageCount; i++) {
+                if (self.CurrenetPageIndex == i) {
+                    strhtml += "<li class=\"active\"><a href=\"javascript:\" data-pc=\"" + i + "\">" + i + "</a></li>";
+                } else {
+                    strhtml += "<li><a href=\"javascript:\" data-pc=\"" + i + "\">" + i + "</a></li>";
+                }
+            }
+        }
+        if (self.PageCount > 10) {
+            var beginIndex = 1;
+            var endIndex = self.PageCount;
+            if (currentIndex - 5 > 0) {
+                beginIndex = currentIndex - 5;
+            }
+            if (currentIndex + 5 <= self.PageCount) {
+                endIndex = currentIndex + 5;
+            }
+            for (var i = beginIndex; i <= endIndex; i++) {
+                if (self.CurrenetPageIndex == i) {
+                    strhtml += "<li class=\"active\"><a href=\"javascript:\" data-pc=\"" + i + "\">" + i + "</a></li>";
+                } else {
+                    strhtml += "<li><a href=\"javascript:\" data-pc=\"" + i + "\">" + i + "</a></li>";
+                }
+            }
+        }
+        $(".pagination").html(strhtml);
+        $(".pagination li a").click(function () {
+            if (p == undefined) {
+                p = {};
+                p.page = $(this).data("pc");
+                func(p);
+            } else {
+                p.page = $(this).data("pc");
+                func(p);
+            }
+        });
     }
-    if (pagerCount > currentPager) {
-        nextIndex = parseInt(currentPager) + 1;
-    } else {
-        nextIndex = pagerCount;
-        indexFlag = 1;
-    }
-    var ul = document.getElementById("ul");
-    var preli = document.createElement("li");
-    preli.innerHTML = '<a id="preview" href="/Home/Index?CurrentIndex=' + preViewIndex + '">preview</a>';
-    ul.appendChild(preli);
-    var currentli = document.createElement("li");
-    currentli.innerHTML = '<a   href="#">当前第' + currentPager + '</a>';
-    ul.appendChild(currentli);
-    var nextli = document.createElement("li");
-    nextli.innerHTML = '<a id="next" href="/Home/Index?CurrentIndex=' + nextIndex + '">next</a>';
-    ul.appendChild(nextli);
 }
-
-$("#preview").click(function () {
-    if (preViewIndex == 0) {
-        this.style.backgroundColor = "red";
-    }
-    if (indexFlag == 1) {
-        $("#next").style.backgroundColor = "red";
-    }
-});
-
-$("#next").click(function () {
-    if (preViewIndex == 0) {
-        $("#preview").style.backgroundColor = "red";
-    }
-    if (indexFlag == 1) {
-        this.style.backgroundColor = "red";
-    }
-});
-
-

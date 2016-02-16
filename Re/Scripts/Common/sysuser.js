@@ -33,33 +33,75 @@ function beforeClick(treeId, treeNode, clickFlag) {
 }
 function onClick(event, treeId, treeNode, clickFlag) {
     $("#DeptId").val(treeNode.id);
-    getDataByDeptId(treeNode.id);
+    getDataByDeptId({ "DeptId": treeNode.id });
 }
 
-function getDataByDeptId(deptId) {
+function getDataByDeptId(p) {
     var htmls = "";
     $.ajax({
         url: "/SysUser/GetList",
         async: false,
         type: "post",
-        data: { "DeptId": deptId },
+        data: p,
         success: function (json) {
             if (json != null && json != undefined) {
-                for (var i = 0; i < json.length; i++) {
-                    htmls += "<tr>";
-                    htmls += "<td>" + json[i].Id + "</td>";
-                    htmls += "<td>" + json[i].Account + "</td>";
-                    htmls += "<td>" + json[i].RealName + "</td>";
-                    htmls += "<td>" + json[i].DeptId + "</td>";
-                    htmls += "<td>" + json[i].Type + "</td>";
-                    htmls += "<td><a href='javascript:' onclick='permiss(" + json[i].Id + ")'>分配权限</a></td>";
-                    htmls += "</tr>";
+                if (json.data != null) {
+                    for (var i = 0; i < json.data.length; i++) {
+                        htmls += "<tr>";
+                        htmls += "<td>" + json.data[i].Id + "</td>";
+                        htmls += "<td>" + json.data[i].Account + "</td>";
+                        htmls += "<td>" + json.data[i].RealName + "</td>";
+                        htmls += "<td>" + json.data[i].DeptId + "</td>";
+                        htmls += "<td>" + json.data[i].Type + "</td>";
+                        htmls += "<td><a href='javascript:' onclick='permiss(" + json.data[i].Id + ")'>分配权限</a></td>";
+                        htmls += "</tr>";
+                    }
+                    paerSpance.getpager(json.pager, p, getDataByDeptId);
+                    //getpager(json.pager, p);
                 }
             }
         }
     });
     $("#showUser").html(htmls);
 }
+
+//function getpager(self, p) {
+//    var strhtml = "";
+//    var currentIndex = self.CurrenetPageIndex;
+//    if (self.PageCount > 0 && self.PageCount <= 10) {
+//        for (var i = 1; i <= self.PageCount; i++) {
+//            if (self.CurrenetPageIndex == i) {
+//                strhtml += "<li class=\"active\"><a href=\"javascript:\" data-pc=\"" + i + "\">" + i + "</a></li>";
+//            } else {
+//                strhtml += "<li><a href=\"javascript:\" data-pc=\"" + i + "\">" + i + "</a></li>";
+//            }
+//        }
+//    }
+//    if (self.PageCount > 10) {
+//        var beginIndex = 1;
+//        var endIndex = self.PageCount;
+//        if (currentIndex - 5 > 0) {
+//            beginIndex = currentIndex - 5;
+//        }
+//        if (currentIndex + 5 <= self.PageCount) {
+//            endIndex = currentIndex + 5;
+//        }
+//        for (var i = beginIndex; i <= endIndex; i++) {
+//            if (self.CurrenetPageIndex == i) {
+//                strhtml += "<li class=\"active\"><a href=\"javascript:\" data-pc=\"" + i + "\">" + i + "</a></li>";
+//            } else {
+//                strhtml += "<li><a href=\"javascript:\" data-pc=\"" + i + "\">" + i + "</a></li>";
+//            }
+//        }
+//    }
+//    $(".pagination").html(strhtml);
+//    $(".pagination li a").click(function () {
+//        p.page = $(this).data("pc");
+//        getDataByDeptId(p);
+//    });
+//}
+
+
 
 function getTime() {
     var now = new Date(),

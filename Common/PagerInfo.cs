@@ -11,7 +11,7 @@ namespace Common
         {
             this.orderBy = "desc";
             this.orderByKey = "Id";
-            this.PageSize = 3;
+            this.PageSize = 1;
         }
         public int ItemCount { get; set; }
 
