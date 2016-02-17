@@ -1,6 +1,4 @@
-﻿@{
-    Layout = null;
-}
+﻿
 @using Models;
 @using Common;
 @using DAL;
@@ -17,8 +15,9 @@
             {
                 if (item.ParentId == 0)
                 {
-                    <li>
-                        <a href="@item.TemplateUrl">@item.Template</a>
+                    <li data-url="@item.Id">
+                        <a href="javascript:">@item.Template</a>
+
                         @if (listUserRole != null && listUserRole.Count > 0)
                         {
                             List<SysTemplateViewModel> listSecod = new Sys_TemplateDAL().GetViewlListByType(0, item.Id, listUserRole[0].RoleId);
@@ -36,9 +35,19 @@
                         }
                     </li>
                 }
-
             }
         }
         }
     </ul>
 </div>
+<script type="text/javascript">
+    $(".bigMenu>li").find("ul").hide();
+    $(".bigMenu>li").click(function () {
+        if ($(this).find("ul").css("display") == "none") {
+            $(this).find("ul").show();
+        } else {
+            $(this).find("ul").hide();
+        }
+    });
+
+</script>

@@ -9,7 +9,7 @@ namespace Re
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
-                        "~/Scripts/jquery-1.4.4min.js",
+                        "~/Scripts/jquery-1.9.0min.js",
                         "~/Scripts/bootstrap.min.js"));
 
             //bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
