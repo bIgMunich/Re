@@ -161,7 +161,7 @@ function getRoleByUserId() {
 function getRoleData() {
     var htmls = "";
     $.ajax({
-        url: "/SysRole/GetList",
+        url: "/SysRole/GetLists",
         async: false,
         type: "post",
         success: function (json) {

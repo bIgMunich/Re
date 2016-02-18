@@ -21,10 +21,10 @@ namespace DAL
             return new Helper().Update(entity);
         }
 
-        //public List<Sys_Role> GetList()
-        //{
-        //    return new Helper().ExecuteList<Sys_Role>("select * from Sys_Role", null);
-        //}
+        public List<Sys_Role> GetList()
+        {
+            return new Helper().ExecuteList<Sys_Role>("select * from Sys_Role", null);
+        }
 
         public ObjEntity GetList(PagerInfo pageInfo)
         {

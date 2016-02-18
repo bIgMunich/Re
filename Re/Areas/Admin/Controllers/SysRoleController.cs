@@ -31,6 +31,12 @@ namespace Re.Areas.Admin.Controllers
             return Json(new Sys_RoleDAL().Insert(entity));
         }
 
+        public ActionResult GetLists()
+        {
+            List<Sys_Role> list = new Sys_RoleDAL().GetList();
+            return Json(list,JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult GetList(int page = 1)
         {
             PagerInfo pi = new PagerInfo();
